@@ -1,0 +1,14 @@
+{
+  "network": "sepolia",
+  "deployer": "0x9c9BFa9207560E726bdf3577a5059dC3DDD05c94",
+  "timestamp": "2025-12-03T19:10:49.849Z",
+  "contracts": {
+    "MockERC20": "0xbF279a2A4BE76B5BDFd75027b5eC9C52b5556922",
+    "MockAggregatorV3": "0x7F921608DD0Cf2Ec8C29f31FB1b4A38E4f9A204C",
+    "AccessNFT": "0xFd6949cDb49f6D78f7c4c17f435020e320D89217",
+    "StrategyNFT": "0x2fa700E279B3564C77a4D409d5A15A948eCb94fd",
+    "TradingPool": "0xB71Bca0D2504af5A020E5d061b29Dbbb7fFcFA1f",
+    "Challenge": "0xE09A5beBe6Fc7b97947e76acEfB218d9002e2F0d",
+    "PriceFeed": "0xcf34633d05a79c613DCbD9525a10Dd25d36dBc51"
+  }
+}

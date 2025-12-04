@@ -1,0 +1,13 @@
+{
+  "network": "tenderly",
+  "deployer": "0x2980AF2f3b43634b38c4832b82A2A455192423B9",
+  "timestamp": "2025-12-03T23:34:59.801Z",
+  "contracts": {
+    "NexusToken": "0xF9322a90E3F7591E27dafB60FaB952201DD31a13",
+    "NexusSwap": "0xd229e939cfDa3df72E384ADc199c26BC0C134a80",
+    "TradingPool": "0xc57C3EA374b8bF6D31AF143CEb5a9BF16890EA2E",
+    "Challenge": "0x1f484b8a19762D4A25BD8735c560F37C7633dB54",
+    "Staking": "0xd943F377306b5A2363037743e0DB3970efB0A3C5",
+    "Governance": "0xe5606f9c0D0F74cbEb9C54D72dd6f406247e7049"
+  }
+}
