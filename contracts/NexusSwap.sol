@@ -58,15 +58,14 @@ contract NexusSwap is Ownable, ReentrancyGuard {
     /// @param minAmountOut Minimum amount of output tokens
     /// @param isExternal Whether the swap is external (unused in this mock)
     /// @return amountOut The amount of output tokens received
-    function swap(
-        address tokenIn,
-        address tokenOut,
-        uint256 amountIn,
-        uint256 minAmountOut,
-        bool isExternal
-    ) external payable nonReentrant returns (uint256 amountOut) {
+    function swap(address tokenIn, address tokenOut, uint256 amountIn, uint256 minAmountOut, bool isExternal)
+        external
+        payable
+        nonReentrant
+        returns (uint256 amountOut)
+    {
         require(amountIn > 0, "Invalid amount");
-        
+
         bool isETHIn = tokenIn == address(0);
         bool isETHOut = tokenOut == address(0);
 
@@ -80,13 +79,13 @@ contract NexusSwap is Ownable, ReentrancyGuard {
         // Determine reserves (Assuming TokenA is Nexus, TokenB is WETH/ETH-equivalent)
         // If ETH is involved, we treat it as the "B" side for calculation purposes
         bool isTokenAIn = tokenIn == address(tokenA);
-        
+
         // If ETH is in, it's like TokenB in.
         // If TokenA is in, it's TokenA in.
-        
+
         uint256 reserveIn;
         uint256 reserveOut;
-        
+
         if (isTokenAIn) {
             reserveIn = reserveA;
             reserveOut = reserveB; // We use reserveB to track the "other" asset (WETH or ETH)
@@ -103,7 +102,7 @@ contract NexusSwap is Ownable, ReentrancyGuard {
         // Send fee to treasury
         if (feeAmount > 0) {
             if (isETHIn) {
-                (bool success, ) = treasury.call{value: feeAmount}("");
+                (bool success,) = treasury.call{value: feeAmount}("");
                 require(success, "ETH fee transfer failed");
             } else {
                 IERC20(tokenIn).transfer(treasury, feeAmount);
@@ -114,10 +113,10 @@ contract NexusSwap is Ownable, ReentrancyGuard {
         // amountOut = (amountInAfterFee * reserveOut) / (reserveIn + amountInAfterFee)
         // Prevent division by zero if reserves are empty (fallback for mock)
         if (reserveIn == 0 || reserveOut == 0) {
-             // Mock fallback: 1:1 swap if no liquidity
-             amountOut = amountInAfterFee;
+            // Mock fallback: 1:1 swap if no liquidity
+            amountOut = amountInAfterFee;
         } else {
-             amountOut = (amountInAfterFee * reserveOut) / (reserveIn + amountInAfterFee);
+            amountOut = (amountInAfterFee * reserveOut) / (reserveIn + amountInAfterFee);
         }
 
         require(amountOut >= minAmountOut, "Slippage too high");
@@ -134,7 +133,7 @@ contract NexusSwap is Ownable, ReentrancyGuard {
         // Transfer Output
         if (isETHOut) {
             require(address(this).balance >= amountOut, "Insufficient ETH liquidity");
-            (bool success, ) = payable(msg.sender).call{value: amountOut}("");
+            (bool success,) = payable(msg.sender).call{value: amountOut}("");
             require(success, "ETH transfer failed");
         } else {
             require(IERC20(tokenOut).balanceOf(address(this)) >= amountOut, "Insufficient token liquidity");

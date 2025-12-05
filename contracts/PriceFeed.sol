@@ -28,8 +28,14 @@ contract PriceFeed is Ownable {
     /// @notice Retrieves the latest price of an asset
     /// @param symbol The asset symbol
     /// @return price The current price
-    /// @return updatedAt The timestamp of the last update
-    function getPrice(string memory symbol) external view returns (uint256 price, uint256 updatedAt) {
-        return (prices[symbol], lastUpdated[symbol]);
+    function getPrice(string memory symbol) external view returns (uint256) {
+        return prices[symbol];
+    }
+
+    /// @notice Retrieves the last update timestamp for an asset
+    /// @param symbol The asset symbol
+    /// @return timestamp The last update timestamp
+    function getLastUpdated(string memory symbol) external view returns (uint256) {
+        return lastUpdated[symbol];
     }
 }

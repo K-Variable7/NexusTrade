@@ -41,8 +41,12 @@ contract Staking is Ownable, ReentrancyGuard {
         require(_amount > 0, "Cannot stake 0");
         stakingToken.transferFrom(msg.sender, address(this), _amount);
 
-        userStakes[msg.sender]
-        .push(StakeInfo({amount: _amount, startTime: block.timestamp, lockPeriod: _lockPeriod, active: true}));
+        userStakes[msg.sender].push(StakeInfo({
+            amount: _amount,
+            startTime: block.timestamp,
+            lockPeriod: _lockPeriod,
+            active: true
+        }));
 
         emit Staked(msg.sender, _amount, _lockPeriod);
     }

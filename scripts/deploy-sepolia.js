@@ -33,7 +33,7 @@ async function main() {
   // Deploy AccessNFT
   console.log("🎫 Deploying AccessNFT...");
   const AccessNFT = await ethers.getContractFactory("AccessNFT");
-  const accessNFT = await AccessNFT.deploy(deployer.address);
+  const accessNFT = await AccessNFT.deploy(deployer.address, deployer.address, deployer.address);
   await accessNFT.waitForDeployment();
   console.log("✅ AccessNFT deployed to:", await accessNFT.getAddress());
 
@@ -47,21 +47,21 @@ async function main() {
   // Deploy TradingPool (using deployer as reward pool for now)
   console.log("🏦 Deploying TradingPool...");
   const TradingPool = await ethers.getContractFactory("TradingPool");
-  const tradingPool = await TradingPool.deploy(deployer.address);
+  const tradingPool = await TradingPool.deploy(nexusTokenAddress, deployer.address);
   await tradingPool.waitForDeployment();
   console.log("✅ TradingPool deployed to:", await tradingPool.getAddress());
 
   // Deploy Challenge
   console.log("🏆 Deploying Challenge...");
   const Challenge = await ethers.getContractFactory("Challenge");
-  const challenge = await Challenge.deploy();
+  const challenge = await Challenge.deploy(nexusTokenAddress);
   await challenge.waitForDeployment();
   console.log("✅ Challenge deployed to:", await challenge.getAddress());
 
   // Deploy PriceFeed
   console.log("💰 Deploying PriceFeed...");
   const PriceFeed = await ethers.getContractFactory("PriceFeed");
-  const priceFeed = await PriceFeed.deploy(await mockAggregator.getAddress());
+  const priceFeed = await PriceFeed.deploy();
   await priceFeed.waitForDeployment();
   console.log("✅ PriceFeed deployed to:", await priceFeed.getAddress());
 
@@ -71,8 +71,7 @@ async function main() {
   const nexusSwap = await NexusSwap.deploy(
     nexusTokenAddress, // nexusToken
     ethers.ZeroAddress, // weth (using zero address for now)
-    deployer.address, // treasuryWallet
-    deployer.address  // rewardsPool
+    deployer.address // treasuryWallet
   );
   await nexusSwap.waitForDeployment();
   const nexusSwapAddress = await nexusSwap.getAddress();
@@ -83,29 +82,33 @@ async function main() {
 
   // Mint some AccessNFTs for testing
   console.log("Minting AccessNFTs...");
-  await accessNFT.safeMint(deployer.address);
+  await accessNFT.addToWhitelist([deployer.address]);
+  await accessNFT.mint({ value: ethers.parseEther("0.1") });
   console.log("✅ Minted AccessNFT #0 to deployer");
 
   // Create a sample trading strategy
   console.log("Creating sample trading strategy...");
   await strategyNFT.mintStrategy(
+    deployer.address,
     "Conservative Yield Strategy",
     "A balanced strategy focusing on stable yields with moderate risk",
-    ethers.parseEther("0.1") // 0.1 ETH price
+    3 // risk level 1-5
   );
   console.log("✅ Created StrategyNFT #0");
 
   // Create a sample trading pool
-  console.log("Creating sample trading pool...");
-  await tradingPool.createPool("Community Pool", 7 * 24 * 60 * 60); // 7 days
-  console.log("✅ Created TradingPool #0");
+  console.log("Setting up sample trading pool...");
+  // Note: TradingPool doesn't have createPool function, just deposit/withdraw
+  console.log("✅ TradingPool setup complete");
 
   // Create a sample challenge
   console.log("Creating sample challenge...");
+  await nexusToken.approve(await challenge.getAddress(), ethers.parseEther("0.5"));
   await challenge.createChallenge(
     "Weekly Trading Challenge",
+    "Compete with other traders and win prizes",
     7 * 24 * 60 * 60, // 7 days
-    { value: ethers.parseEther("0.5") } // 0.5 ETH reward
+    ethers.parseEther("0.5") // 0.5 ETH reward
   );
   console.log("✅ Created Challenge #0 with 0.5 ETH reward");
 
