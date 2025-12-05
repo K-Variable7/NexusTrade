@@ -63,18 +63,18 @@ export const CONTRACT_ADDRESSES = {
   }
 } as const;
 
-// Contract ABIs (imported from artifacts)
-import AccessNFTABI from "../../artifacts/contracts/AccessNFT.sol/AccessNFT.json";
-import StrategyNFTABI from "../../artifacts/contracts/StrategyNFT.sol/StrategyNFT.json";
-import TradingPoolABI from "../../artifacts/contracts/TradingPool.sol/TradingPool.json";
-import ChallengeABI from "../../artifacts/contracts/Challenge.sol/Challenge.json";
-import PriceFeedABI from "../../artifacts/contracts/PriceFeed.sol/PriceFeed.json";
-import MockERC20ABI from "../../artifacts/contracts/MockERC20.sol/MockERC20.json";
-import NexusTokenABI from "../../artifacts/contracts/NexusToken.sol/NexusToken.json";
-import NexusSwapABI from "../../artifacts/contracts/NexusSwap.sol/NexusSwap.json";
-import MockAggregatorV3ABI from "../../artifacts/contracts/MockAggregatorV3.sol/MockAggregatorV3.json";
-import StakingABI from "../../artifacts/contracts/Staking.sol/Staking.json";
-import GovernanceABI from "../../artifacts/contracts/Governance.sol/Governance.json";
+// Contract ABIs (imported from abis directory)
+import AccessNFTABI from "./abis/AccessNFT.json";
+import StrategyNFTABI from "./abis/StrategyNFT.json";
+import TradingPoolABI from "./abis/TradingPool.json";
+import ChallengeABI from "./abis/Challenge.json";
+import PriceFeedABI from "./abis/PriceFeed.json";
+import MockERC20ABI from "./abis/MockERC20.json";
+import NexusTokenABI from "./abis/NexusToken.json";
+import NexusSwapABI from "./abis/NexusSwap.json";
+import MockAggregatorV3ABI from "./abis/MockAggregatorV3.json";
+import StakingABI from "./abis/Staking.json";
+import GovernanceABI from "./abis/Governance.json";
 
 export const CONTRACT_ABIS = {
   AccessNFT: AccessNFTABI.abi as any,
